@@ -32,9 +32,9 @@ def check_mst(adj_mat: np.ndarray,
         for j in range(i+1):
             total += mst[i, j]
     assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight'
-    assert (np.argwhere(gp.mst).shape[0]/2) == gp.mst.shape[0]-1 ##checking that we have n-1 edges 
-    assert gp.mst.T.all() == gp.mst.all() ## checking if my matrix is symetrical by doing its transpose 
-
+    assert (np.argwhere(mst).shape[0]/2) == mst.shape[0]-1 ##checking that we have n-1 edges 
+    assert mst.T.all() == mst.all() ## checking if is symetrical
+    
 def test_mst_small():
     """ Unit test for the construction of a minimum spanning tree on a small graph """
     file_path = './data/small.csv'

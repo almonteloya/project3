@@ -7,6 +7,6 @@ name = "mst"
 authors = [{name = "Ana Laura Almonte", email = "ana.almonte@ucsf.edu"}]
 readme = "README.md"
 dynamic = ["version", "description"]
-dependencies = ["numpy", "scikit-learn","pytest","heapq"]
+dependencies = ["numpy", "scikit-learn","pytest"]
 [project.urls]
 Home = "https://github.com/almonteloya"
