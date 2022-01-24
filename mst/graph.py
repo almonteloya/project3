@@ -1,5 +1,5 @@
 import numpy as np
-import heapq
+import heapq as hp
 from typing import Union
 
 class Graph:
@@ -21,18 +21,66 @@ class Graph:
         with open(path) as f:
             return np.loadtxt(f, delimiter=',')
 
-    def construct_mst(self):
-        """ Given `self.adj_mat`, the adjacency matrix of a connected undirected graph, implement Prim's 
-        algorithm to construct an adjacency matrix encoding the minimum spanning tree of `self.adj_mat`. 
-            
-        `self.adj_mat` is a 2D numpy array of floats. 
-        Note that because we assume our input graph is undirected, `self.adj_mat` is symmetric. 
-        Row i and column j represents the edge weight between vertex i and vertex j. An edge weight of zero indicates that no edge exists. 
-        
-        TODO: 
-            This function does not return anything. Instead, store the adjacency matrix 
-        representation of the minimum spanning tree of `self.adj_mat` in `self.mst`.
-        We highly encourage the use of priority queues in your implementation. See the heapq
-        module, particularly the `heapify`, `heappop`, and `heappush` functions.
+    def construct_mst(self : np.array): 
         """
-        self.mst = 'TODO'
+        This method will implement a Prim algorithm to construct an adjacency 
+        matrix to produce a minimum spanning tree. 
+        
+        `self.adj_mat` is a 2D numpy array of floats.
+        Note that because we assume our input graph is undirected, `self.adj_mat` is symmetric.        
+        
+        """
+        self.__convert_matrix__()
+        ## create a matrix of zeros shaped like the adj matrix
+        mst = np.zeros(self.adj_mat.shape)
+        ## Choose the fisrt starting vertex
+        first = next(iter(self.adjacent_list))
+        ## create a list to keep track of the visited nodes, add the fisrt one
+        visited = [first]
+        ## priority queue to add the edjes and path
+        priority_q = []
+        #use heapq to keep track of the min value
+        hp.heapify(priority_q)
+        for node, weight in self.adjacent_list[first].items():
+            priority_q.append((weight, first, node))
+            ## add a tupple with the edge, the first vertex and the vertex connected to them
+        while priority_q:
+            weight, prev, node = hp.heappop(priority_q)
+            ## if we haven't visit the node explore it
+            if node not in visited:
+                ## add to the visited nodes
+                visited.append(node)
+                ##return the min edge weight to the according positions
+                mst[prev,node] = weight
+                ## since is a symetrical matrix do the same for the other position
+                mst[node,prev] = weight
+                #for each of the neighbors of the selected node if we haven't visit
+                for to_next, weight in self.adjacent_list[node].items():
+                    if to_next not in visited:
+                        ## add them weight into the priority queue
+                        hp.heappush(priority_q, (weight, node, to_next))
+        self.mst = mst
+
+        return self
+    
+    def __convert_matrix__(self):
+        """
+        Converts the adjency matrix to a adjency list using dictionaries, 
+        keeping only the edges with no zero values so it's easier to traverse
+        Returns a self.adjency list 
+        -------
+
+        """
+        self.adjacent_list={}
+        for i in range(len(self.adj_mat)):
+            ##create a nested disctionary for every column
+            self.adjacent_list[i] = {}
+            for j in range(len(self.adj_mat[i])):
+                        ## only add no zero values
+                       if self.adj_mat[i][j]!= 0:
+                           # add the wight of the edjes as values associated with a key (node is connecting) 
+                            self.adjacent_list[i][j] = (self.adj_mat[i][j])
+                    
+        return self
+
+

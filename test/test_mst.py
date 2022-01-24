@@ -32,7 +32,8 @@ def check_mst(adj_mat: np.ndarray,
         for j in range(i+1):
             total += mst[i, j]
     assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight'
-
+    assert (np.argwhere(gp.mst).shape[0]/2) == gp.mst.shape[0]-1 ##checking that we have n-1 edges 
+    assert gp.mst.T.all() == gp.mst.all() ## checking if my matrix is symetrical by doing its transpose 
 
 def test_mst_small():
     """ Unit test for the construction of a minimum spanning tree on a small graph """
@@ -40,6 +41,7 @@ def test_mst_small():
     g = Graph(file_path)
     g.construct_mst()
     check_mst(g.adj_mat, g.mst, 8)
+
 
 
 def test_mst_single_cell_data():
@@ -54,9 +56,20 @@ def test_mst_single_cell_data():
     dist_mat = pairwise_distances(coords)
     g = Graph(dist_mat)
     g.construct_mst()
-    check_mst(g.adj_mat, g.mst, 57.263561605571695)
+    check_mst(g.adj_mat, g.mst, 57.263561605571695,.3)
 
 
 def test_mst_student():
-    """ TODO: Write at least one unit test for MST construction """
-    pass
+    """ I manually created a numoy array with dimessions 7x7 and
+    I previousl know the shortest path is 7. 
+    """
+    x=np.array([[0., 2., 3., 0., 0., 0., 0.],
+     [2., 0., 1. ,1., 4., 0. ,0.],
+     [3., 1. ,0., 0., 0., 5. ,0.],
+     [1., 0., 0., 0., 1., 0. ,0.],
+     [0. ,4., 0., 1., 0., 1., 0.],
+     [0. ,0., 5., 0., 1., 0., 1.],
+     [0., 0., 0., 0., 0., 1., 0.]])
+    g=Graph(x)
+    g.construct_mst()
+    check_mst(g.adj_mat, g.mst, 7)
