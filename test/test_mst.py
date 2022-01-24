@@ -31,9 +31,12 @@ def check_mst(adj_mat: np.ndarray,
     for i in range(mst.shape[0]):
         for j in range(i+1):
             total += mst[i, j]
-    assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight'
-    assert (np.argwhere(mst).shape[0]/2) == mst.shape[0]-1 ##checking that we have n-1 edges 
-    assert mst.T.all() == mst.all() ## checking if is symetrical
+    assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight' 
+    assert mst.T.all() == mst.all() ## checking if is symetrical using the transpose
+    ## checking that we have n-1 edges 
+    assert (np.argwhere(mst).shape[0]/2) == mst.shape[0]-1 ## counting the no-zero edges, then divide by 2 since its symetrical
+    assert set(mst.flatten()).issubset(set(adj_mat.flatten())) ## check if the mst values are a subset of the adjency matrix
+
     
 def test_mst_small():
     """ Unit test for the construction of a minimum spanning tree on a small graph """
