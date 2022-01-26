@@ -59,11 +59,12 @@ def test_mst_single_cell_data():
     dist_mat = pairwise_distances(coords)
     g = Graph(dist_mat)
     g.construct_mst()
-    check_mst(g.adj_mat, g.mst, 57.263561605571695,.3)
+    check_mst(g.adj_mat, g.mst, 57.263561605571695)
 
 
 def test_mst_student():
-    """ I manually created a numoy array with dimessions 7x7 and
+    """ 
+    I manually created a numoy array with dimessions 7x7 and
     I previousl know the shortest path is 7. 
     """
     x=np.array([[0., 2., 3., 0., 0., 0., 0.],

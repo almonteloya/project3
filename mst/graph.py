@@ -33,17 +33,17 @@ class Graph:
         self.__convert_matrix__()
         ## create a matrix of zeros shaped like the adj matrix
         mst = np.zeros(self.adj_mat.shape)
-        ## Choose the fisrt starting vertex
+        ## Choose the first starting vertex
         first = next(iter(self.adjacent_list))
-        ## create a list to keep track of the visited nodes, add the fisrt one
+        ## create a list to keep track of the visited nodes, add the first one
         visited = [first]
-        ## priority queue to add the edjes and path
+        ## priority queue to add the edges and path
         priority_q = []
-        #use heapq to keep track of the min value
-        hp.heapify(priority_q)
         for node, weight in self.adjacent_list[first].items():
             priority_q.append((weight, first, node))
             ## add a tupple with the edge, the first vertex and the vertex connected to them
+        #use heapq to keep track of the min value
+        hp.heapify(priority_q)
         while priority_q:
             weight, prev, node = hp.heappop(priority_q)
             ## if we haven't visit the node explore it
@@ -67,7 +67,7 @@ class Graph:
         """
         Converts the adjency matrix to a adjency list using dictionaries, 
         keeping only the edges with no zero values so it's easier to traverse
-        Returns a self.adjency list 
+        Returns a self.adjency list to be used in Prim MST
         -------
 
         """
